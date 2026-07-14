@@ -1,0 +1,6 @@
+{
+  "name": "Developer Portfolio",
+  "description": "A high-performance interactive developer portfolio featuring projects, backend skills, terminal stats, lofi synth music, and blog sections styled with a terminal noir aesthetic.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
