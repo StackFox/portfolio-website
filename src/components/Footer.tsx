@@ -1,47 +1,113 @@
 'use client';
 
-import Link from 'next/link';
+import { useState, useEffect } from 'react';
+import { Github, Linkedin, Mail, Globe } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+
+const confessions = [
+  "This footer took longer to design than most of my backend logic.",
+  "Frontend polish level: I tried.",
+  "This site is over-engineered on the backend and under-engineered on the frontend — exactly as advertised.",
+];
 
 export default function Footer() {
+  const [confessionIndex, setConfessionIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setConfessionIndex((prev) => (prev + 1) % confessions.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
   const socialLinks = [
-    { label: 'GitHub', href: 'https://github.com' },
-    { label: 'LinkedIn', href: 'https://linkedin.com' },
-    { label: 'Twitter', href: 'https://twitter.com' },
-    { label: 'Email', href: 'mailto:rakshit0702@gmail.com' },
+    { label: 'GitHub', href: 'https://github.com/StackFox', icon: Github },
+    { label: 'LinkedIn', href: 'https://linkedin.com', icon: Linkedin },
+    { label: 'X / Twitter', href: 'https://x.com', icon: Globe },
+    { label: 'Email', href: 'mailto:rakshit0702@gmail.com', icon: Mail },
   ];
 
   return (
-    <footer className="w-full bg-[#0e0e0e] border-t border-brand-border py-12 px-6 mt-auto">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-        {/* Left Column: Signature */}
-        <div className="flex flex-col gap-1 items-center md:items-start text-center md:text-left">
-          <Link
-            href="/about"
-            className="font-mono text-lg font-bold text-brand-primary tracking-wider hover:opacity-85 transition-opacity"
-          >
-            RAKSHIT_SHARMA
-          </Link>
-          <div className="text-sm text-brand-on-surface-variant font-sans mt-2">
-            © 2024 Built with coffee and regex.
-          </div>
-          <div className="text-xs text-brand-on-surface-variant/50 font-mono mt-1">
-            Over-engineered on the backend, under-engineered on the frontend — exactly as advertised.
-          </div>
-        </div>
+    <footer className="relative w-full mt-auto">
+      {/* Gradient fade from page bg to solid footer bg */}
+      <div className="h-24 bg-gradient-to-b from-transparent to-[#0a0a0a]" />
 
-        {/* Right Column: Links */}
-        <div className="flex flex-wrap gap-6 items-center justify-center">
-          {socialLinks.map((link) => (
+      <div className="bg-[#0a0a0a] border-t border-brand-border/30">
+        <div className="max-w-2xl mx-auto px-6 py-16 flex flex-col items-center gap-12">
+
+          {/* 1. Easter Egg Line */}
+          <div className="text-center space-y-2">
+            <p className="font-mono text-sm italic text-brand-on-surface-variant/50">
+              &ldquo;Ah, you made it to the end.&rdquo;
+            </p>
+            <p className="font-mono text-xs text-brand-on-surface-variant/30">
+              There&apos;s no prize. Just this footer. Congrats.
+            </p>
+          </div>
+
+          {/* 2. Sarcastic Stats Strip */}
+          <div className="w-full text-center">
+            <p className="font-mono text-[11px] text-brand-on-surface-variant/40 leading-relaxed break-words">
+              Coffee consumed: unmeasured &nbsp;&middot;&nbsp; Bugs fixed: some &nbsp;&middot;&nbsp; Bugs created: also some &nbsp;&middot;&nbsp; Uptime of this site: better than my sleep schedule
+            </p>
+          </div>
+
+          {/* 3. Honest Footer Card — rotating confessions */}
+          <div className="w-full border border-brand-border/40 rounded-xl bg-[#1c1b1b]/60 p-6 text-center min-h-[88px] flex items-center justify-center">
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={confessionIndex}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.5 }}
+                className="font-mono text-sm text-brand-on-surface-variant/70"
+              >
+                &ldquo;{confessions[confessionIndex]}&rdquo;
+              </motion.p>
+            </AnimatePresence>
+          </div>
+
+          {/* 4. Real Contact Row */}
+          <div className="flex flex-col sm:flex-row gap-4">
             <a
-              key={link.label}
-              href={link.href}
-              target="_blank"
-              rel="noreferrer"
-              className="font-mono text-sm text-brand-on-surface-variant hover:text-brand-primary hover:text-glow transition-colors duration-200"
+              href="mailto:rakshit0702@gmail.com"
+              className="px-6 py-2.5 rounded-lg border border-brand-primary text-brand-primary font-mono text-sm font-medium hover:bg-brand-primary hover:text-black transition-all duration-200"
             >
-              {link.label}
+              Email me
             </a>
-          ))}
+            <a
+              href="#"
+              className="px-6 py-2.5 rounded-lg border border-brand-primary text-brand-primary font-mono text-sm font-medium hover:bg-brand-primary hover:text-black transition-all duration-200"
+            >
+              Download resume
+            </a>
+          </div>
+
+          {/* 5. Social Icons Row */}
+          <div className="flex gap-5">
+            {socialLinks.map((link) => {
+              const Icon = link.icon;
+              return (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  title={link.label}
+                  className="text-brand-on-surface-variant/50 hover:text-brand-primary transition-colors duration-200"
+                >
+                  <Icon className="w-5 h-5" />
+                </a>
+              );
+            })}
+          </div>
+
+          {/* 6. Bottom Legal / Meta Line */}
+          <p className="font-mono text-[10px] text-brand-on-surface-variant/30 text-center">
+            &copy; 2026 Rakshit Sharma. Built with Next.js, mild sleep deprivation, and Stack Overflow.
+          </p>
+
         </div>
       </div>
     </footer>
