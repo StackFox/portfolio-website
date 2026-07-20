@@ -10,6 +10,14 @@ export interface Project {
   architectureDetails?: string;
 }
 
+export interface BlogPostAPI {
+  id: string;
+  title: string;
+  excerpt: string;
+  markdown: string;
+  date: string | null;
+}
+
 export interface BlogPost {
   id: string;
   title: string;
@@ -33,3 +41,15 @@ export interface GuestbookMessage {
   message: string;
   timestamp: number;
 }
+
+export interface ActivityDay {
+  date: string;
+  count: number;
+  level: 0 | 1 | 2 | 3 | 4;
+}
+
+export interface ActivityCalendarData {
+  githubCalendar: ActivityDay[];
+  leetcodeCalendar: ActivityDay[];
+}
+

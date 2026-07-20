@@ -1,69 +1,89 @@
 'use client';
 
 import { useState } from 'react';
-import { Gavel, Link, Cpu, Database, Search, Terminal, ArrowUpRight, Code } from 'lucide-react';
+import { Gavel, Link, Database, Search, Terminal, ArrowUpRight, Code } from 'lucide-react';
+import { FaExternalLinkAlt } from 'react-icons/fa';
 import { Project } from '../types';
 
 const PROJECTS: Project[] = [
   {
     id: 'legalsaathi',
     title: 'LegalSaathi',
-    description: 'A robust document management and processing pipeline for legal professionals. Built to handle massive PDF parsing and indexing with sub-second search times.',
-    updatedText: 'updated 2d ago',
-    tags: ['Rust', 'PostgreSQL', 'Elasticsearch'],
+    description: 'AI-powered legal aid platform providing accessible legal guidance to Indian citizens. Uses RAG with real Indian legal statutes to deliver cited legal information in 10 Indian languages.',
+    updatedText: 'updated recently',
+    tags: ['Next.js 16', 'TypeScript', 'Tailwind CSS', 'Pinecone', 'Gemini AI'],
     iconName: 'gavel',
+    githubUrl: 'https://github.com/StackFox/LegalSaathi',
+    liveUrl: 'https://legal-saathi-six.vercel.app',
     architectureDetails: `
 Pipeline Flow:
-[Client] ---> [Actix-Web API (Rust)] ---> [Kafka Queue] ---> [OCR/Parsing Workers (Rust/Tesseract)]
-                                                                    |
-                                                                    +---> [PostgreSQL (Metadata)]
-                                                                    +---> [Elasticsearch (Vector Indexes)]
+[User Query (Text/Voice)] ---> [Next.js API Route] ---> [Gemini 2.5 Flash + Embeddings]
+                                                              |
+                                                              +---> [Pinecone Vector DB (Legal Statutes)]
+                                                              |
+                                                              +---> [RAG Pipeline]
+                                                                        |
+                                                                        +---> Domain Classification (Tenancy, Police, Consumer, etc.)
+                                                                        +---> Confidence Scoring (High/Medium/Low)
+                                                                        +---> Cited Response (Act, Section, Relevance)
 
 Key Features:
-- Stream-based multipart file uploads supporting PDFs up to 500MB.
-- Sub-second fuzzy search queries across millions of pages using tailored tokenizers.
-- Secure, read-restricted document download URLs protected by AES-GCM-256 tokens.
+- RAG pipeline with Google Gemini 2.5 Flash + Pinecone for accurate legal citations.
+- Multilingual support across 10 Indian languages with i18n context.
+- Voice input via Web Speech API for accessibility.
+- Clerk authentication with Email/Password + Google OAuth.
+- Admin analytics dashboard for tracking queries, escalations, and domain distribution.
     `,
   },
   {
     id: 'linkzap',
     title: 'LinkZap',
-    description: 'High-performance URL shortener and analytics engine. Designed for extreme concurrency and low latency redirect resolution.',
-    updatedText: 'updated 5d ago',
-    tags: ['Go', 'Redis', 'gRPC'],
+    description: 'Simple, clean URL shortener built with Next.js. Shorten links quickly with a minimal interface.',
+    updatedText: 'updated recently',
+    tags: ['Next.js', 'JavaScript', 'CSS'],
     iconName: 'link',
+    githubUrl: 'https://github.com/StackFox/LinkZap',
     architectureDetails: `
 Pipeline Flow:
-[HTTP Redirect Request] ---> [Fiber Proxy (Go)] ---> [Redis Cache (Hot Links)]
-                                      |
-                                      +---> (Cache Miss) ---> [PostgreSQL Cluster]
-                                      |
-                                      +---> [gRPC Collector] ---> [ClickHouse Analytics]
+[User] ---> [Next.js Frontend] ---> [API Route] ---> [Short URL Generator]
+                                                            |
+                                                            +---> [Database (URL Storage)]
+                                                            |
+                                                            +---> [Redirect Handler]
 
 Key Features:
-- Real-time client-telemetry aggregation pipeline processing 20k+ logs/sec.
-- Bloom Filter cache proxies optimized to instantly block 99.9% of invalid misses.
-- Auto-collapsing redirect queues implementing sliding window counter algorithms.
+- Clean, minimal interface for shortening URLs.
+- Next.js App Router with server-side rendering.
+- Responsive design with CSS modules.
     `,
   },
   {
-    id: 'cacheflow',
-    title: 'CacheFlow',
-    description: 'Distributed, in-memory caching layer with automatic eviction strategies and persistent fallback. Experimental side project exploring consensus algorithms.',
-    updatedText: 'updated 12d ago',
-    tags: ['C++', 'ZeroMQ'],
-    iconName: 'cpu',
+    id: 'aura-pdf',
+    title: 'AuraPDF',
+    description: 'A RAG application for natural language processing on PDF files. Ask questions about your PDFs and get AI-powered answers with source citations.',
+    updatedText: 'updated recently',
+    tags: ['TypeScript', 'Docker', 'RAG', 'AI'],
+    iconName: 'database',
+    githubUrl: 'https://github.com/StackFox/aura-pdf',
     architectureDetails: `
 Pipeline Flow:
-[Client Node] ---> [ZeroMQ Router] ---> [Eviction Layer (LRU-K / ARC Cache)]
-                                                    |
-                                                    +---> [AOF Journal (Disk Sync)]
-                                                    +---> [Raft Consensus Broker]
+[User Upload (PDF)] ---> [Client App] ---> [Server API]
+                                                  |
+                                                  +---> [PDF Parser / Text Extractor]
+                                                  |
+                                                  +---> [Embedding Generator]
+                                                  |
+                                                  +---> [Vector Store]
+                                                  |
+                                                  +---> [RAG Query Pipeline]
+                                                            |
+                                                            +---> [LLM Response with Citations]
 
 Key Features:
-- Written in pure modern C++20 with raw socket polling and lock-free thread queues.
-- Adaptive Eviction Engine dynamically shifting ratios based on hit/miss frequencies.
-- Automated snapshot journaling and point-in-time recovery to maintain integrity.
+- Full-stack RAG application with client/server architecture.
+- Docker Compose for easy deployment and development.
+- Natural language querying over PDF content.
+- Source citation tracking for AI-generated answers.
     `,
   },
 ];
@@ -91,9 +111,6 @@ export default function ProjectsView() {
         return <Gavel className="w-5 h-5 text-brand-primary" />;
       case 'link':
         return <Link className="w-5 h-5 text-brand-primary" />;
-      case 'memory':
-      case 'cpu':
-        return <Cpu className="w-5 h-5 text-brand-primary" />;
       default:
         return <Database className="w-5 h-5 text-brand-primary" />;
     }
@@ -261,12 +278,25 @@ export default function ProjectsView() {
                     </span>
                   ))}
                 </div>
-                <button
-                  onClick={() => setSelectedProject(null)}
-                  className="px-4 py-2 bg-brand-primary text-black font-mono text-xs font-semibold rounded hover:scale-105 active:scale-95 transition-all cursor-pointer"
-                >
-                  Terminate Diagnostic
-                </button>
+                <div className="flex gap-2">
+                  {selectedProject.githubUrl && (
+                    <a
+                      href={selectedProject.githubUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="px-4 py-2 bg-brand-primary text-black font-mono text-xs font-semibold rounded hover:scale-105 active:scale-95 transition-all inline-flex items-center gap-2"
+                    >
+                      View on GitHub
+                      <FaExternalLinkAlt className="w-3 h-3" />
+                    </a>
+                  )}
+                  <button
+                    onClick={() => setSelectedProject(null)}
+                    className="px-4 py-2 border border-brand-border text-brand-on-surface-variant font-mono text-xs rounded hover:border-brand-primary hover:text-brand-primary transition-all cursor-pointer"
+                  >
+                    [CLOSE]
+                  </button>
+                </div>
               </div>
             </div>
           </div>

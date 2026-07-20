@@ -2,13 +2,16 @@
 
 import { useState, useEffect, FormEvent } from 'react';
 import { Database, Terminal as TermIcon, HardDrive, Cpu, Send, CheckCircle2, Trash2 } from 'lucide-react';
-import { GuestbookMessage } from '../types';
+import { ActivityCalendar } from 'react-activity-calendar';
+import { GuestbookMessage, ActivityCalendarData } from '../types';
 
 export default function AboutView() {
   const [messages, setMessages] = useState<GuestbookMessage[]>([]);
   const [nameInput, setNameInput] = useState('');
   const [msgInput, setMsgInput] = useState('');
   const [wittyQuote, setWittyQuote] = useState<string | null>(null);
+  const [activityData, setActivityData] = useState<ActivityCalendarData | null>(null);
+  const [activityLoading, setActivityLoading] = useState(true);
 
   // Load and save messages in localStorage
   useEffect(() => {
@@ -28,6 +31,15 @@ export default function AboutView() {
       setMessages(initial);
       localStorage.setItem('developer_guestbook', JSON.stringify(initial));
     }
+  }, []);
+
+  // Fetch activity calendar data
+  useEffect(() => {
+    fetch('/api/activity-calendar')
+      .then((res) => res.json())
+      .then((data: ActivityCalendarData) => setActivityData(data))
+      .catch((err) => console.error('Failed to load activity calendar:', err))
+      .finally(() => setActivityLoading(false));
   }, []);
 
   const handleSubmitMessage = (e: FormEvent) => {
@@ -62,7 +74,7 @@ export default function AboutView() {
       Docker: "'It worked on my machine' — so we containerized my machine and now we ship my machine.",
     };
     setWittyQuote(quotes[tool] || null);
-    setTimeout(() => setWittyQuote(null), 5000);
+    setTimeout(() => setWittyQuote(null), 8000);
   };
 
   return (
@@ -79,15 +91,54 @@ export default function AboutView() {
             I believe in clean architecture, exhaustive testing, and the undeniable truth that caching is the hardest problem in computer science.
           </p>
         </div>
+      </section>
 
-        <div className="md:col-span-5 relative group">
-          <div className="absolute inset-0 bg-brand-primary/10 -rotate-3 rounded-lg border border-brand-primary/30 glow-primary transition-all duration-300 group-hover:rotate-0"></div>
-          <img
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPIy2bItuN470TEFH10z1mVsxeKCwIlRRT15yt_zv9prFaCz_Ookuu2dSiAKrrvKTnMvSvNj_sh9QK2BY_1fj4hHYiw5VmpJ_AmOGuS7R1GQ62tJ2XmpTMuF0Qrjt-hxsnC44o45qXaI2j9cOsj38o79abB_5qdJ-FXbbD0LeUx_ipdGQAV4j-fgv-GfbhQjDphP_PtOoIUzOyTVaiGI_8z0aL3ufUNO2qjs4Lz4dwHARlbus3llcItIVxY2Vqxvea30NUEQAm5tc"
-            alt="Developer portrait at desk"
-            className="relative z-10 rounded-lg w-full object-cover aspect-[4/5] border border-brand-border grayscale contrast-125 hover:grayscale-0 transition-all duration-500 bg-[#1c1b1b]"
-          />
+      {/* Activity Calendars */}
+      <section className="space-y-6">
+        <div>
+          <h2 className="font-mono text-xl md:text-2xl font-bold text-brand-on-surface">
+            Activity Logs
+          </h2>
+          <p className="font-sans text-xs md:text-sm text-brand-on-surface-variant mt-2">
+            Contribution history across platforms.
+          </p>
         </div>
+        {activityLoading ? (
+          <div className="bg-[#1c1b1b] border border-brand-border rounded-lg p-6 animate-pulse">
+            <p className="font-mono text-xs text-brand-on-surface-variant">Loading activity data...</p>
+          </div>
+        ) : activityData ? (
+          <div className="space-y-4">
+            {activityData.githubCalendar.length > 0 && (
+              <div className="bg-[#1c1b1b] border border-brand-border rounded-lg p-4 overflow-x-auto">
+                <p className="font-mono text-[10px] text-brand-on-surface-variant mb-3">// GitHub Contributions</p>
+                <ActivityCalendar
+                  data={activityData.githubCalendar}
+                  theme={{ dark: ['#1c1b1b', '#0e4429', '#006d32', '#26a641', '#39d353'] }}
+                  blockSize={14}
+                  blockMargin={4}
+                  fontSize={12}
+                />
+              </div>
+            )}
+            {activityData.leetcodeCalendar.length > 0 && (
+              <div className="bg-[#1c1b1b] border border-brand-border rounded-lg p-4 overflow-x-auto">
+                <p className="font-mono text-[10px] text-brand-on-surface-variant mb-3">// LeetCode Submissions</p>
+                <ActivityCalendar
+                  data={activityData.leetcodeCalendar}
+                  theme={{ dark: ['#1c1b1b', '#4fdbc8', '#4fdbc8', '#4fdbc8', '#4fdbc8'] }}
+                  blockSize={14}
+                  blockMargin={4}
+                  fontSize={12}
+                />
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="bg-[#1c1b1b] border border-brand-border rounded-lg p-6">
+            <p className="font-mono text-xs text-brand-on-surface-variant">Activity data unavailable.</p>
+          </div>
+        )}
       </section>
 
       {/* Terminal fact list */}
@@ -108,14 +159,14 @@ export default function AboutView() {
               <span className="text-brand-secondary">cat</span>{' '}
               <span className="text-brand-on-surface ml-2">/etc/location</span>
             </div>
-            <div className="pl-4 text-brand-on-surface-variant/80">&gt; Distributed (Remote, Earth)</div>
+            <div className="pl-4 text-brand-on-surface-variant/80">&gt; Delhi, India</div>
 
             <div className="flex mt-4">
               <span className="text-brand-primary mr-2">$</span>
               <span className="text-brand-secondary">echo</span>{' '}
               <span className="text-brand-on-surface ml-2">$CURRENT_ROLE</span>
             </div>
-            <div className="pl-4 text-brand-on-surface-variant/80">&gt; Senior Backend Architect</div>
+            <div className="pl-4 text-brand-on-surface-variant/80">&gt; Freelance developer</div>
 
             <div className="flex mt-4">
               <span className="text-brand-primary mr-2">$</span>

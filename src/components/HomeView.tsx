@@ -5,19 +5,19 @@ import { useRouter } from 'next/navigation';
 import { Mail, Link2, FileText, Check, ExternalLink } from 'lucide-react';
 import { motion } from 'motion/react';
 import MusicPlayer from './MusicPlayer';
+import { a } from 'motion/react-client';
 
 type ResponseData = {
-    totalCommits: number,
-    currentStreak: number,
-    totalRepos: number,
-    totalLCSolved: number
+  totalCommits: number,
+  currentStreak: number,
+  totalRepos: number,
+  totalLCSolved: number
 }
 
 export default function HomeView() {
   const router = useRouter();
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
-  const [showResumeModal, setShowResumeModal] = useState(false);
   const [githubData, setGithubData] = useState<ResponseData>();
 
   useEffect(() => {
@@ -48,6 +48,15 @@ export default function HomeView() {
     navigator.clipboard.writeText(window.location.href);
     setCopiedLink(true);
     setTimeout(() => setCopiedLink(false), 2000);
+  };
+
+  const handleResumeClick = () => {
+    // TODO: Add analytics when a user clicks on the button
+    window.open(
+      "https://drive.google.com/file/d/16kuws3BlyAFBnvqVEdsQ17q3LXU9rKPG/view?usp=sharing",
+      "_blank",
+      "noopener,noreferrer"
+    );
   };
 
   return (
@@ -111,9 +120,9 @@ export default function HomeView() {
 
           {/* Resume Button */}
           <button
-            onClick={() => setShowResumeModal(true)}
+            onClick={() => { handleResumeClick() }}
             className="w-12 h-12 rounded-full bg-[#1c1b1b] hover:bg-brand-primary hover:text-black border border-brand-border hover:border-brand-primary text-brand-primary flex items-center justify-center transition-all duration-300 relative group cursor-pointer shadow-lg"
-            title="View Resume / Credentials"
+            title="View Resume"
           >
             <FileText className="w-5 h-5" />
             <span className="absolute -top-10 scale-0 group-hover:scale-100 transition-all duration-200 bg-[#2a2a2a] text-brand-on-surface text-xs font-mono py-1 px-2 rounded border border-brand-border pointer-events-none whitespace-nowrap z-20">
@@ -162,7 +171,7 @@ export default function HomeView() {
             Want to build something bulletproof?
           </h3>
           <p className="font-sans text-sm text-brand-on-surface-variant">
-            Explore my production projects or read my architectural breakdowns.
+            Explore my projects or read my architectural breakdowns.
           </p>
         </div>
         <div className="flex gap-3">
@@ -180,93 +189,6 @@ export default function HomeView() {
           </button>
         </div>
       </div>
-
-      {/* Resume Modal */}
-      {showResumeModal && (
-        <div className="fixed inset-0 bg-[#131313]/90 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
-          <div className="bg-[#1c1b1b] border border-brand-border rounded-lg max-w-2xl w-full max-h-[85vh] overflow-hidden flex flex-col shadow-2xl animate-in fade-in zoom-in duration-200">
-            {/* Modal Title bar */}
-            <div className="bg-[#2a2a2a] px-4 py-3 border-b border-brand-border flex justify-between items-center">
-              <div className="flex items-center gap-2 font-mono text-xs text-brand-on-surface">
-                <FileText className="w-4 h-4 text-brand-primary" />
-                <span>system_resume_v2.1.sh</span>
-              </div>
-              <button
-                onClick={() => setShowResumeModal(false)}
-                className="text-brand-on-surface-variant hover:text-brand-primary text-sm font-mono cursor-pointer"
-              >
-                [ESC_CLOSE]
-              </button>
-            </div>
-
-            {/* Modal Scroll content */}
-            <div className="p-6 overflow-y-auto space-y-6 text-sm font-sans">
-              <div className="border-b border-brand-border pb-4 flex flex-col sm:flex-row sm:justify-between sm:items-end gap-2">
-                <div>
-                  <h2 className="text-xl font-mono font-bold text-brand-primary">Rakshit Portfolio</h2>
-                  <p className="text-xs text-brand-on-surface-variant font-mono mt-1">
-                    Senior Backend Developer & System Architect
-                  </p>
-                </div>
-                <div className="text-xs text-brand-on-surface-variant font-mono">
-                  <div>Location: Earth (Remote)</div>
-                  <div>Email: rakshit0702@gmail.com</div>
-                </div>
-              </div>
-
-              {/* Work Experience */}
-              <div className="space-y-4">
-                <h3 className="font-mono text-xs text-brand-primary border-b border-brand-border pb-1 uppercase tracking-wider">
-                  // Professional Experience
-                </h3>
-
-                <div className="space-y-3">
-                  <div>
-                    <div className="flex justify-between items-start">
-                      <span className="font-bold text-brand-on-surface">Senior Software Engineer — HyperScale Corp</span>
-                      <span className="font-mono text-xs text-brand-on-surface-variant">2022 - Present</span>
-                    </div>
-                    <p className="text-xs text-brand-on-surface-variant/80 mt-1">
-                      Designed and maintained fault-tolerant microservices handles 1M+ concurrent TCP sessions. Rewrote slow query indexing routines to boost API speeds by 400%.
-                    </p>
-                  </div>
-
-                  <div>
-                    <div className="flex justify-between items-start">
-                      <span className="font-bold text-brand-on-surface">Backend Lead — LogicCloud Solutions</span>
-                      <span className="font-mono text-xs text-brand-on-surface-variant">2019 - 2022</span>
-                    </div>
-                    <p className="text-xs text-brand-on-surface-variant/80 mt-1">
-                      Orchestrated migration from bare metal servers to Kubernetes, deploying high availability Redis clusters and PostgreSQL database replication schemas.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Education */}
-              <div className="space-y-2">
-                <h3 className="font-mono text-xs text-brand-primary border-b border-brand-border pb-1 uppercase tracking-wider">
-                  // Education & Certifications
-                </h3>
-                <div className="flex justify-between items-center text-xs">
-                  <span className="font-bold text-brand-on-surface">B.S. in Computer Science & Engineering</span>
-                  <span className="font-mono text-brand-on-surface-variant">Class of 2019</span>
-                </div>
-              </div>
-
-              {/* Footer */}
-              <div className="flex justify-end pt-4 border-t border-brand-border">
-                <button
-                  onClick={() => setShowResumeModal(false)}
-                  className="px-4 py-2 bg-brand-primary text-black font-mono text-xs font-semibold rounded hover:scale-105 active:scale-95 transition-all cursor-pointer"
-                >
-                  Return to Dashboard
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+    </div >
   );
 }

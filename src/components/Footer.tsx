@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Github, Linkedin, Mail, Globe } from 'lucide-react';
+import { Linkedin, Mail } from 'lucide-react';
+import { SiGithub, SiLeetcode, SiX } from 'react-icons/si';
 import { motion, AnimatePresence } from 'motion/react';
 
 const confessions = [
@@ -21,10 +22,11 @@ export default function Footer() {
   }, []);
 
   const socialLinks = [
-    { label: 'GitHub', href: 'https://github.com/StackFox', icon: Github },
-    { label: 'LinkedIn', href: 'https://linkedin.com', icon: Linkedin },
-    { label: 'X / Twitter', href: 'https://x.com', icon: Globe },
-    { label: 'Email', href: 'mailto:rakshit0702@gmail.com', icon: Mail },
+    { label: 'GitHub', href: 'https://github.com/StackFox', icon: SiGithub, size: 26 },
+    { label: 'LeetCode', href: 'https://leetcode.com/u/jacoder69/', icon: SiLeetcode, size: 26 },
+    { label: 'LinkedIn', href: 'https://linkedin.com/in/rakshit-codes', icon: Linkedin, size: 26 },
+    { label: 'X / Twitter', href: 'https://x.com/sharma_rak72933', icon: SiX, size: 26 },
+    { label: 'Email', href: 'mailto:rakshit0702@gmail.com', icon: Mail, size: 26 },
   ];
 
   return (
@@ -77,7 +79,8 @@ export default function Footer() {
               Email me
             </a>
             <a
-              href="#"
+              href="https://drive.google.com/file/d/16kuws3BlyAFBnvqVEdsQ17q3LXU9rKPG/view?usp=sharing"
+              target="_blank"
               className="px-6 py-2.5 rounded-lg border border-brand-primary text-brand-primary font-mono text-sm font-medium hover:bg-brand-primary hover:text-black transition-all duration-200"
             >
               Download resume
@@ -97,7 +100,7 @@ export default function Footer() {
                   title={link.label}
                   className="text-brand-on-surface-variant/50 hover:text-brand-primary transition-colors duration-200"
                 >
-                  <Icon className="w-5 h-5" />
+                  <Icon size={link.size} />
                 </a>
               );
             })}

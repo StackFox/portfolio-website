@@ -1,34 +1,43 @@
 'use client';
 
 import { useState } from 'react';
-import { Terminal, Database, ShieldAlert, CheckCircle2 } from 'lucide-react';
+import { Terminal, ShieldAlert, CheckCircle2 } from 'lucide-react';
 import { SkillItem } from '../types';
 
 const SKILLS_DATA: SkillItem[] = [
-  // Backend Systems
-  { name: 'Rust', level: 90, category: 'Languages', description: 'Used for legal processing pipelines (LegalSaathi) and safe concurrent token parsing. Experienced in tokio multi-threading, custom error traits, and stream handling.' },
-  { name: 'Go', level: 95, category: 'Languages', description: 'Primary language for highly concurrent proxy routers and shorteners (LinkZap). Expert in channels, select-case statements, go-routines, and HTTP fiber frameworks.' },
-  { name: 'C++', level: 80, category: 'Languages', description: 'Used for ultra-low-latency consensus engines (CacheFlow). Expert in C++20 raw socket polling, std::move optimization, and memory pooling.' },
-  { name: 'gRPC / Protobuf', level: 88, category: 'Languages', description: 'Implemented for microservice-to-microservice calls with strict proto schemas. Reduced payload overhead by 65% compared to REST/JSON.' },
+  // Languages
+  { name: 'JavaScript', level: 85, category: 'Languages', description: 'Primary language for full-stack web development. Used across React, Next.js, and Node.js projects including LinkZap, LifeQR, and the LinkTree clone.' },
+  { name: 'TypeScript', level: 80, category: 'Languages', description: 'Used in Next.js and React projects for type-safe development. Applied in LegalSaathi, AuraPDF, and this portfolio website.' },
+  { name: 'Python', level: 75, category: 'Languages', description: 'Used for backend scripting, AI-driven projects, and automation. Experience with Flask and data processing pipelines.' },
+  { name: 'Java', level: 65, category: 'Languages', description: 'Basic proficiency. Currently learning Spring Boot for building robust backend APIs and microservices.' },
+  { name: 'HTML / CSS', level: 85, category: 'Languages', description: 'Strong foundation in semantic HTML and modern CSS. Used Tailwind CSS extensively across projects for rapid UI development.' },
+  { name: 'C / C++', level: 60, category: 'Languages', description: 'Basic proficiency from academic coursework. Understanding of memory management, OOP concepts, and data structures.' },
 
-  // Databases
-  { name: 'PostgreSQL', level: 92, category: 'Databases', description: 'Highly skilled in complex indexing, EXPLAIN plan analysis, custom replication schemas, and connection pool optimization.' },
-  { name: 'Redis', level: 94, category: 'Databases', description: 'Used extensively for cluster replication, sliding window rate limiters, Bloom filter proxies, and distributed cache locking.' },
-  { name: 'Elasticsearch', level: 85, category: 'Databases', description: 'Implemented vector search matrices and customized indexing configurations for full-text legal corpus processing.' },
+  // Frontend
+  { name: 'React', level: 85, category: 'Frontend', description: 'Core frontend library used in most projects. Built interactive UIs with hooks, context API, and component-based architecture.' },
+  { name: 'Next.js', level: 82, category: 'Frontend', description: 'Full-stack React framework used for LegalSaathi, LinkZap, LifeQR-frontend, and this portfolio. Experience with App Router, SSR, and API routes.' },
+  { name: 'Tailwind CSS', level: 80, category: 'Frontend', description: 'Utility-first CSS framework used across all recent projects for fast, responsive UI development.' },
+  { name: 'Vue.js', level: 55, category: 'Frontend', description: 'Basic experience with Vue components and reactive data binding. Listed in GitHub tech stack badges.' },
 
-  // DevOps & Infrastructure
-  { name: 'Docker / OCI Containers', level: 90, category: 'DevOps & Cloud', description: 'Multi-stage builds targeting highly slim images. Setup automated layer caches for speedy production builds.' },
-  { name: 'Kubernetes', level: 88, category: 'DevOps & Cloud', description: 'Managed bare-metal k8s clusters. Confident writing YAML manifests, custom ingress controllers, and pod disruption budgets.' },
-  { name: 'Linux System Administration', level: 92, category: 'DevOps & Cloud', description: 'Comfortable with bash scripting, systemd daemon setups, network socket tuning (TCP/IP), and advanced memory tracking.' },
+  // Backend & Databases
+  { name: 'Node.js', level: 78, category: 'Backend & Databases', description: 'Server-side JavaScript runtime used for building REST APIs and handling business logic in Express-based applications.' },
+  { name: 'Spring Boot', level: 50, category: 'Backend & Databases', description: 'Currently learning. Built a basic URL shortener (Linkly) with Spring Boot to explore Java backend development.' },
+  { name: 'MongoDB', level: 72, category: 'Backend & Databases', description: 'NoSQL database used in LifeQR and LinkTree clone for flexible document storage and fast prototyping.' },
+  { name: 'MySQL', level: 65, category: 'Backend & Databases', description: 'Relational database experience from academic projects and backend applications requiring structured data storage.' },
+
+  // DevOps & Tools
+  { name: 'Git / GitHub', level: 82, category: 'DevOps & Tools', description: 'Version control and collaboration. Active on GitHub with 30+ repositories. SSoC 2026 open source contributor. Experienced with PRs, branching, and code review.' },
+  { name: 'Docker', level: 60, category: 'DevOps & Tools', description: 'Containerization basics. Used Docker Compose in AuraPDF for setting up client/server development environments.' },
+  { name: 'VS Code', level: 85, category: 'DevOps & Tools', description: 'Primary IDE. Proficient with extensions, debugging, Git integration, and terminal workflows.' },
 ];
 
 export default function SkillsView() {
   const [activeSkill, setActiveSkill] = useState<SkillItem | null>(SKILLS_DATA[0]);
-  const [typedCommand, setTypedCommand] = useState('skill --describe rust');
+  const [typedCommand, setTypedCommand] = useState('skill --describe javascript');
 
   const handleSkillClick = (skill: SkillItem) => {
     setActiveSkill(skill);
-    setTypedCommand(`skill --describe ${skill.name.toLowerCase().replace(' / ', '_')}`);
+    setTypedCommand(`skill --describe ${skill.name.toLowerCase().replace(' / ', '_').replace(' ', '_')}`);
   };
 
   // Group by category
@@ -42,7 +51,7 @@ export default function SkillsView() {
           /skills
         </h1>
         <p className="font-sans text-base md:text-lg text-brand-on-surface-variant max-w-2xl leading-relaxed">
-          My technical capabilities and systems expertise. Classically trained in performance optimization, concurrency, and robust infrastructure.
+          My technical capabilities across frontend, backend, and tools. Full Stack Web Developer focused on React, Next.js, and modern JavaScript frameworks.
         </p>
       </div>
 
