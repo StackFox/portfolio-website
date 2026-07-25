@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { Client, type PageObjectResponse } from "@notionhq/client";
+import { unstable_cache } from "next/cache";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
@@ -11,8 +12,9 @@ function isFullPage(page: unknown): page is PageObjectResponse {
     );
 }
 
-export async function GET() {
-    try {
+const getBlogPosts = unstable_cache(
+    async () => {
+        console.log("running heavy task")
         // find published blogs/(data sources) from the database.
         const res = await notion.dataSources.query({
             data_source_id: process.env.NOTION_DATA_SOURCE_ID!,
@@ -60,7 +62,7 @@ export async function GET() {
             res.results
                 .filter(isFullPage)
                 .map(async (page) => {
-                    const {markdown} = await notion.pages.retrieveMarkdown({
+                    const { markdown } = await notion.pages.retrieveMarkdown({
                         page_id: page.id,
                     });
 
@@ -74,7 +76,21 @@ export async function GET() {
                 })
         );
 
-        return Response.json(posts);
+        return posts;
+    },
+    ["blog-posts"],
+    {
+        tags: ['blogs'],
+        revalidate: 600,
+    }
+)
+
+export async function GET() {
+    try {
+        console.log("GET requested")
+        const data = await getBlogPosts();
+
+        return Response.json(data);
     } catch (error) {
         return NextResponse.json({
             message: "Something went wrong", error

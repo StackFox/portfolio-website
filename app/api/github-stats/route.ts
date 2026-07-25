@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import { NextResponse } from "next/server";
 
 type ResponseData = {
@@ -7,10 +8,9 @@ type ResponseData = {
   totalLCSolved: number
 }
 
-
-export async function GET() {
-
-  try {
+const getGithubStats = unstable_cache(
+  async () => {
+    console.log("running heavy task")
     const query = `
   query {
     user(login: "StackFox") {
@@ -90,8 +90,22 @@ export async function GET() {
       totalRepos,
       totalLCSolved
     };
+  },
+  ["github-stats"],
+  {
+    tags: ['stats'],
+    revalidate: 3600,
+  }
+)
 
-    return NextResponse.json(githubStats);
+
+export async function GET() {
+
+  try {
+    console.log("GET requested")
+    const data = await getGithubStats()
+
+    return NextResponse.json(data);
   } catch (error) {
     return NextResponse.json({
       message: "Something went wrong"
