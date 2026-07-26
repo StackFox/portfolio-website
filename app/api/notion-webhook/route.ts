@@ -20,8 +20,7 @@ export async function POST(req: NextRequest) {
 
   const body = await req.json();
 
-  // console.log("[notion-body] ", body)
-  console.log("[notion-body.type] ", body.type)
+  console.log("[notion-body] ", body)
 
   switch (body.type) {
     case "page.created":
