@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Linkedin, Mail } from 'lucide-react';
+import { Linkedin, Mail, Coffee } from 'lucide-react';
 import { SiGithub, SiLeetcode, SiX } from 'react-icons/si';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -26,6 +26,7 @@ export default function Footer() {
     { label: 'LeetCode', href: 'https://leetcode.com/u/jacoder69/', icon: SiLeetcode, size: 26 },
     { label: 'LinkedIn', href: 'https://linkedin.com/in/rakshit-codes', icon: Linkedin, size: 26 },
     { label: 'X / Twitter', href: 'https://x.com/sharma_rak72933', icon: SiX, size: 26 },
+    { label: 'Buy Me a Coffee', href: 'https://buymeacoffee.com/rakshit.dev', icon: Coffee, size: 26 },
     { label: 'Email', href: 'mailto:rakshit0702@gmail.com', icon: Mail, size: 26 },
   ];
 

@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Mail, Link2, FileText, Check, ExternalLink } from 'lucide-react';
+import { Mail, FileText, ExternalLink, Check } from 'lucide-react';
+import { SiGithub } from 'react-icons/si';
 import { motion } from 'motion/react';
 import MusicPlayer from './MusicPlayer';
 import { a } from 'motion/react-client';
@@ -17,7 +18,6 @@ type ResponseData = {
 export default function HomeView() {
   const router = useRouter();
   const [copiedEmail, setCopiedEmail] = useState(false);
-  const [copiedLink, setCopiedLink] = useState(false);
   const [githubData, setGithubData] = useState<ResponseData>();
 
   useEffect(() => {
@@ -42,12 +42,6 @@ export default function HomeView() {
     setCopiedEmail(true);
     setTimeout(() => setCopiedEmail(false), 2000);
     window.location.href = 'mailto:rakshit0702@gmail.com';
-  };
-
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(window.location.href);
-    setCopiedLink(true);
-    setTimeout(() => setCopiedLink(false), 2000);
   };
 
   const handleResumeClick = () => {
@@ -94,17 +88,19 @@ export default function HomeView() {
 
         {/* Circular Action Links */}
         <div className="flex gap-4 items-center">
-          {/* Copy Link Button */}
-          <button
-            onClick={handleCopyLink}
+          {/* GitHub Profile Button */}
+          <a
+            href="https://github.com/StackFox"
+            target="_blank"
+            rel="noopener noreferrer"
             className="w-12 h-12 rounded-full bg-[#1c1b1b] hover:bg-brand-primary hover:text-black border border-brand-border hover:border-brand-primary text-brand-primary flex items-center justify-center transition-all duration-300 relative group cursor-pointer shadow-lg"
-            title="Copy Portfolio Link"
+            title="GitHub Profile"
           >
-            {copiedLink ? <Check className="w-5 h-5" /> : <Link2 className="w-5 h-5" />}
+            <SiGithub className="w-5 h-5" />
             <span className="absolute -top-10 scale-0 group-hover:scale-100 transition-all duration-200 bg-[#2a2a2a] text-brand-on-surface text-xs font-mono py-1 px-2 rounded border border-brand-border pointer-events-none whitespace-nowrap z-20">
-              {copiedLink ? 'Copied!' : 'Copy Link'}
+              GitHub
             </span>
-          </button>
+          </a>
 
           {/* Email Button */}
           <button

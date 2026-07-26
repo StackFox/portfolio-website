@@ -1,6 +1,7 @@
 'use client';
 
-import { Code, Terminal } from 'lucide-react';
+import { useState } from 'react';
+import { Code, Terminal, Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -14,6 +15,7 @@ export default function Header({
   onToggleCodeMode,
 }: HeaderProps) {
   const pathname = usePathname();
+  const [mobileOpen, setMobileOpen] = useState(false);
   const tabs = ['Projects', 'Skills', 'Blog', 'About'];
 
   const isActive = (tab: string) => {
@@ -32,7 +34,7 @@ export default function Header({
           RAKSHIT_SHARMA
         </Link>
 
-        {/* Navigation Tabs */}
+        {/* Desktop Navigation Tabs */}
         <nav className="hidden md:flex gap-8 h-full items-center">
           {tabs.map((tab) => {
             const active = isActive(tab);
@@ -75,8 +77,40 @@ export default function Header({
               <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-primary"></span>
             </span>
           </button>
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            title="Toggle navigation menu"
+            className="md:hidden p-2 text-brand-primary hover:text-brand-secondary active:scale-90 transition-all rounded hover:bg-[#1c1b1b]"
+          >
+            {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
         </div>
       </div>
+
+      {/* Mobile Navigation Drawer */}
+      {mobileOpen && (
+        <nav className="md:hidden absolute top-16 left-0 right-0 bg-[#131313]/95 backdrop-blur-md border-b border-brand-border animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="flex flex-col px-4 py-4 gap-1">
+            {tabs.map((tab) => {
+              const active = isActive(tab);
+              return (
+                <Link
+                  key={tab}
+                  href={`/${tab.toLowerCase()}`}
+                  onClick={() => setMobileOpen(false)}
+                  className={`px-4 py-3 font-mono text-sm rounded transition-colors ${
+                    active
+                      ? 'text-brand-primary font-semibold bg-[#1c1b1b]'
+                      : 'text-brand-on-surface-variant hover:text-brand-primary hover:bg-[#1c1b1b]/50'
+                  }`}
+                >
+                  {`/${tab.toLowerCase()}`}
+                </Link>
+              );
+            })}
+          </div>
+        </nav>
+      )}
     </header>
   );
 }

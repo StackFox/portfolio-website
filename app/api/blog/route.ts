@@ -14,7 +14,6 @@ function isFullPage(page: unknown): page is PageObjectResponse {
 
 const getBlogPosts = unstable_cache(
     async () => {
-        console.log("running heavy task")
         // find published blogs/(data sources) from the database.
         const res = await notion.dataSources.query({
             data_source_id: process.env.NOTION_DATA_SOURCE_ID!,
@@ -81,13 +80,12 @@ const getBlogPosts = unstable_cache(
     ["blog-posts"],
     {
         tags: ['blogs'],
-        revalidate: 600,
+        revalidate: 600, // 10 minute
     }
 )
 
 export async function GET() {
     try {
-        console.log("GET requested")
         const data = await getBlogPosts();
 
         return Response.json(data);

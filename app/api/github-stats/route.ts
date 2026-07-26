@@ -10,7 +10,6 @@ type ResponseData = {
 
 const getGithubStats = unstable_cache(
   async () => {
-    console.log("running heavy task")
     const query = `
   query {
     user(login: "StackFox") {
@@ -90,11 +89,13 @@ const getGithubStats = unstable_cache(
       totalRepos,
       totalLCSolved
     };
+
+    return githubStats;
   },
   ["github-stats"],
   {
     tags: ['stats'],
-    revalidate: 3600,
+    revalidate: 3600, // 10 minutes
   }
 )
 
@@ -102,7 +103,6 @@ const getGithubStats = unstable_cache(
 export async function GET() {
 
   try {
-    console.log("GET requested")
     const data = await getGithubStats()
 
     return NextResponse.json(data);

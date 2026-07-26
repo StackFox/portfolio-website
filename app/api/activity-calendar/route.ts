@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import { NextResponse } from "next/server";
 
 type ActivityData = {
@@ -11,8 +12,8 @@ type ResponseData = {
     leetcodeCalendar: Object[],
 }
 
-export async function GET() {
-    try {
+const getActivityCalendar = unstable_cache(
+    async () => {
         const queryGithub = `
             query {
                 user(login: "StackFox") {
@@ -120,12 +121,25 @@ export async function GET() {
             }));
         }
 
-        const ActivityData: ResponseData = {
+        const activityData: ResponseData = {
             githubCalendar: toActivityData(days),
             leetcodeCalendar: parseLeetcodeCalendar(submissionCalendar)
         }
 
-        return NextResponse.json(ActivityData)
+        return activityData;
+    },
+    ["activity-calendar"],
+    {
+        tags: ["calendar"],
+        revalidate: 36000, // 10 hours
+    }
+)
+
+export async function GET() {
+    try {
+        const data = await getActivityCalendar();
+
+        return NextResponse.json(data)
     } catch (error) {
         return NextResponse.json({
             message: "something went wrong",
