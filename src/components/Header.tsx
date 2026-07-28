@@ -29,9 +29,14 @@ export default function Header({
         {/* Logo */}
         <Link
           href="/"
-          className="font-mono text-xl font-bold text-brand-primary tracking-tight cursor-pointer hover:opacity-90 active:scale-95 transition-all text-glow"
+          className="flex items-center gap-2.5 font-mono text-xl font-bold text-brand-primary tracking-tight cursor-pointer hover:opacity-90 active:scale-95 transition-all text-glow"
         >
-          RAKSHIT_SHARMA
+          <img
+            src="/logo.svg"
+            alt="Rakshit Sharma Logo"
+            className="w-8 h-8 object-contain"
+          />
+          <span>RAKSHIT_SHARMA</span>
         </Link>
 
         {/* Desktop Navigation Tabs */}
