@@ -12,6 +12,7 @@ export interface Project {
 
 export interface BlogPostAPI {
   id: string;
+  slug: string;
   title: string;
   excerpt: string;
   markdown: string;
@@ -20,6 +21,7 @@ export interface BlogPostAPI {
 
 export interface BlogPost {
   id: string;
+  slug: string;
   title: string;
   excerpt: string;
   content: string;

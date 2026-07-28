@@ -104,7 +104,7 @@ export default function AboutView() {
           </p>
         </div>
         {activityLoading ? (
-          <div className="bg-[#1c1b1b] border border-brand-border rounded-lg p-6 animate-pulse">
+          <div className="bg-[#1c1b1b] border border-brand-border rounded-lg p-6 animate-pulse min-h-[200px]">
             <p className="font-mono text-xs text-brand-on-surface-variant">Loading activity data...</p>
           </div>
         ) : activityData ? (

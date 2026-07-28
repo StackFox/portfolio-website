@@ -99,6 +99,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noreferrer"
                   title={link.label}
+                  aria-label={link.label}
                   className="text-brand-on-surface-variant/50 hover:text-brand-primary transition-colors duration-200"
                 >
                   <Icon size={link.size} />

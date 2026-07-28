@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 interface NowPlayingData {
   isPlaying: boolean;
@@ -37,13 +38,16 @@ export default function MusicPlayer() {
       target="_blank"
       rel="noreferrer"
       className="mt-10 flex items-center gap-4 w-full max-w-sm bg-[#1c1b1b]/80 border border-brand-border rounded-xl p-3 shadow-lg glow-primary-hover transition-all duration-300 hover:border-brand-primary/50 cursor-pointer group"
+      aria-label={`Now playing: ${nowPlaying.track} by ${nowPlaying.artist}. View on Last.fm`}
     >
       {/* Album Art */}
-      <div className="w-16 h-16 rounded-lg overflow-hidden border border-brand-border/50 flex-shrink-0">
-        <img
+      <div className="w-16 h-16 rounded-lg overflow-hidden border border-brand-border/50 flex-shrink-0 relative">
+        <Image
           src={nowPlaying.albumArt}
-          alt={`${nowPlaying.album} cover`}
-          className="w-full h-full object-cover"
+          alt={`${nowPlaying.album} album cover`}
+          fill
+          sizes="64px"
+          className="object-cover"
         />
       </div>
 
@@ -58,7 +62,7 @@ export default function MusicPlayer() {
       </div>
 
       {/* Sound Bars Animation */}
-      <div className="flex items-end gap-[3px] h-5 flex-shrink-0">
+      <div className="flex items-end gap-[3px] h-5 flex-shrink-0" aria-hidden="true">
         <span className="w-[3px] bg-brand-primary rounded-full animate-[soundbar_0.8s_infinite_0s]" />
         <span className="w-[3px] bg-brand-primary rounded-full animate-[soundbar_0.8s_infinite_0.15s]" />
         <span className="w-[3px] bg-brand-primary rounded-full animate-[soundbar_0.8s_infinite_0.3s]" />

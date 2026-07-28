@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Search, ChevronLeft, ChevronRight, BookOpen, Clock, Tag } from 'lucide-react';
-import Markdown from 'react-markdown';
+import { useRouter } from 'next/navigation';
+import { Search, ChevronLeft, ChevronRight, BookOpen } from 'lucide-react';
 import { BlogPost, BlogPostAPI } from '../types';
 
 function deriveReadTime(markdown: string): string {
@@ -20,6 +20,7 @@ function deriveCategory(markdown: string): string {
 function mapPost(raw: BlogPostAPI): BlogPost {
   return {
     id: raw.id,
+    slug: raw.slug,
     title: raw.title,
     excerpt: raw.excerpt,
     content: raw.markdown,
@@ -30,12 +31,12 @@ function mapPost(raw: BlogPostAPI): BlogPost {
 }
 
 export default function BlogView() {
+  const router = useRouter();
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
 
   useEffect(() => {
     fetch('/api/blog')
@@ -50,13 +51,11 @@ export default function BlogView() {
 
   const postsPerPage = 4;
 
-  // Filter posts
   const filteredPosts = posts.filter((post) =>
     post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     post.excerpt.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Pagination bounds
   const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -76,57 +75,17 @@ export default function BlogView() {
             &gt;&gt; Error: {error}
           </p>
         </div>
-      ) : selectedPost ? (
-        // Detailed Blog Post Reader
-        <div className="animate-in fade-in duration-300">
-          <button
-            onClick={() => setSelectedPost(null)}
-            className="flex items-center gap-2 font-mono text-xs text-brand-primary hover:text-brand-secondary transition-colors mb-6 cursor-pointer"
-          >
-            <ChevronLeft className="w-4 h-4" />
-            <span>[RETURN_TO_ARCHIVES]</span>
-          </button>
-
-          <article className="space-y-6 max-w-3xl mx-auto pb-12">
-            <header className="space-y-4 border-b border-brand-border/30 pb-6">
-              <div className="flex flex-wrap gap-3 items-center text-xs text-brand-on-surface-variant font-mono">
-                <span className="flex items-center gap-1">
-                  <Tag className="w-3.5 h-3.5 text-brand-primary" />
-                  {selectedPost.category}
-                </span>
-                <span>•</span>
-                <span className="flex items-center gap-1">
-                  <Clock className="w-3.5 h-3.5" />
-                  {selectedPost.readTime}
-                </span>
-                <span>•</span>
-                <span>Published: {selectedPost.date}</span>
-              </div>
-              <h1 className="font-mono text-3xl md:text-4xl font-bold text-brand-on-surface leading-tight text-glow">
-                {selectedPost.title}
-              </h1>
-            </header>
-
-            {/* Content body with beautiful text styling */}
-            <div className="prose prose-invert prose-sm max-w-none font-sans text-brand-on-surface-variant leading-relaxed prose-headings:font-mono prose-headings:text-brand-on-surface prose-headings:text-glow prose-code:text-brand-primary prose-pre:bg-[#131313] prose-pre:border prose-pre:border-brand-border/60 prose-pre:rounded prose-a:text-brand-primary hover:prose-a:text-brand-secondary">
-              <Markdown>{selectedPost.content}</Markdown>
-            </div>
-          </article>
-        </div>
       ) : (
-        // Main Blog Archives list
         <div className="w-full">
-          {/* Header block */}
           <header className="mb-12">
             <h1 className="font-mono text-4xl md:text-5xl font-extrabold text-brand-on-surface mb-4">
               Blog
             </h1>
             <p className="font-mono text-xs md:text-sm text-brand-on-surface-variant opacity-70">
-              &gt;&gt; grep -r "thoughts" ./mind
+              &gt;&gt; grep -r &quot;thoughts&quot; ./mind
             </p>
           </header>
 
-          {/* Search bar */}
           <div className="relative mb-8 max-w-md">
             <Search className="absolute left-3 top-2.5 w-4.5 h-4.5 text-brand-on-surface-variant/70" />
             <input
@@ -138,13 +97,12 @@ export default function BlogView() {
             />
           </div>
 
-          {/* Blog Articles */}
           <section className="flex flex-col border-t border-brand-border/30">
             {currentPosts.length > 0 ? (
               currentPosts.map((post) => (
                 <article
                   key={post.id}
-                  onClick={() => setSelectedPost(post)}
+                  onClick={() => router.push(`/blog/${post.slug}`)}
                   className="py-8 border-b border-brand-border/30 group hover:bg-[#1c1b1b]/40 transition-colors duration-200 px-4 -mx-4 rounded cursor-pointer flex flex-col gap-2"
                 >
                   <div className="flex gap-4 items-center text-xs font-mono text-brand-on-surface-variant/70 group-hover:text-brand-primary transition-colors">
@@ -178,7 +136,6 @@ export default function BlogView() {
             )}
           </section>
 
-          {/* Minimal Pagination block matching mockup */}
           <div className="flex justify-between items-center pt-8 border-t border-brand-border/50 mt-4">
             <button
               onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}

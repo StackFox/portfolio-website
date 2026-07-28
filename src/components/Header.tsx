@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Code, Terminal, Menu, X } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
 interface HeaderProps {
@@ -31,10 +32,13 @@ export default function Header({
           href="/"
           className="flex items-center gap-2.5 font-mono text-xl font-bold text-brand-primary tracking-tight cursor-pointer hover:opacity-90 active:scale-95 transition-all text-glow"
         >
-          <img
+          <Image
             src="/logo.svg"
-            alt="Rakshit Sharma Logo"
+            alt="Rakshit Sharma — home"
             className="w-8 h-8 object-contain"
+            width={32}
+            height={32}
+            priority
           />
           <span>RAKSHIT_SHARMA</span>
         </Link>

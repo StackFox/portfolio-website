@@ -60,9 +60,9 @@ export default function SkillsView() {
         <div className="lg:col-span-7 space-y-8">
           {categories.map((category) => (
             <div key={category} className="space-y-4">
-              <h3 className="font-mono text-xs text-brand-primary uppercase tracking-widest border-b border-brand-border/40 pb-2">
+              <h2 className="font-mono text-xs text-brand-primary uppercase tracking-widest border-b border-brand-border/40 pb-2">
                 // {category}
-              </h3>
+              </h2>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {SKILLS_DATA.filter((s) => s.category === category).map((skill) => {
@@ -103,9 +103,9 @@ export default function SkillsView() {
 
         {/* Right 5 Columns: Mock terminal console for diagnostics */}
         <div className="lg:col-span-5 flex flex-col gap-4">
-          <h3 className="font-mono text-xs text-brand-secondary uppercase tracking-widest pb-1">
+          <h2 className="font-mono text-xs text-brand-secondary uppercase tracking-widest pb-1">
             // Diagnostic CLI Output
-          </h3>
+          </h2>
 
           <div className="bg-[#1c1b1b] border border-brand-border rounded-lg overflow-hidden flex flex-col shadow-xl flex-grow min-h-[350px]">
             {/* Window bar */}
