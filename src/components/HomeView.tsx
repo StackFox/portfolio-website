@@ -64,7 +64,7 @@ export default function HomeView() {
           <div className="absolute -inset-1.5 bg-gradient-to-r from-brand-primary via-brand-secondary to-brand-primary rounded-full blur opacity-40 group-hover:opacity-75 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
           <div className="relative w-36 h-36 rounded-full overflow-hidden border border-brand-border bg-[#1c1b1b] flex items-center justify-center">
             <Image
-              src="https://github.com/StackFox.png"
+              src="/logo.svg"
               alt="Rakshit Sharma — GitHub avatar"
               className="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-all duration-500 scale-105"
               width={144}

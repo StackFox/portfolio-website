@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, FormEvent } from 'react';
+import Image from 'next/image';
 import { Database, Terminal as TermIcon, HardDrive, Cpu, Send, CheckCircle2, Trash2 } from 'lucide-react';
 import { ActivityCalendar } from 'react-activity-calendar';
 import { GuestbookMessage, ActivityCalendarData } from '../types';
@@ -90,6 +91,18 @@ export default function AboutView() {
             I'm a backend engineer who spends too much time optimizing database queries that already run in 10ms. 
             I believe in clean architecture, exhaustive testing, and the undeniable truth that caching is the hardest problem in computer science.
           </p>
+        </div>
+
+        <div className="md:col-span-5 flex justify-center md:justify-end">
+          <div className="relative w-64 h-64 rounded-xl overflow-hidden border border-brand-border glow-primary">
+            <Image
+              src="https://github.com/StackFox.png"
+              alt="Rakshit Sharma"
+              fill
+              sizes="256px"
+              className="object-cover"
+            />
+          </div>
         </div>
       </section>
 
