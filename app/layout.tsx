@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import '@/src/index.css';
 import Shell from './Shell';
+import { Analytics } from '@vercel/analytics/next';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://rakshit.codes';
 
@@ -61,6 +62,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Shell>{children}</Shell>
+        <Analytics />
       </body>
     </html>
   );

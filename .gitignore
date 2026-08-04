@@ -10,3 +10,4 @@ coverage/
 assets
 tsconfig.tsbuildinfo
 .vscode/
+.vercel
