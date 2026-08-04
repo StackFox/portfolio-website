@@ -1,20 +1,48 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# portfolio-website
 
-# Run and deploy your AI Studio app
+My personal portfolio. Built with Next.js 15, Notion API, and a terminal noir aesthetic.
 
-This contains everything you need to run your app locally.
+## Stack
 
-View your app in AI Studio: https://ai.studio/apps/97f90851-5054-481c-921c-771689797d39
+- **Framework:** Next.js 15 (App Router)
+- **Styling:** Tailwind CSS v4
+- **CMS:** Notion API (blog)
+- **Data:** GitHub GraphQL API, LeetCode API, Last.fm API
+- **Deployment:** Vercel
 
-## Run Locally
+## Features
 
-**Prerequisites:**  Node.js
+- Projects showcase with architecture diagrams
+- Notion-powered blog with per-post OG images
+- GitHub / LeetCode contribution heatmaps
+- Last.fm now playing widget
+- Interactive terminal CLI
+- SEO: metadata, JSON-LD, sitemap, robots.txt
 
+## Setup
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+```bash
+npm install
+```
+
+Create `.env.local`:
+
+```
+GITHUB_TOKEN=your_github_token
+NOTION_API_KEY=your_notion_integration_key
+NOTION_DATA_SOURCE_ID=your_notion_database_id
+LASTFM_API_KEY=your_lastfm_api_key
+LASTFM_USERNAME=your_lastfm_username
+```
+
+```bash
+npm run dev
+```
+
+## Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start dev server on port 3000 |
+| `npm run build` | Production build |
+| `npm run start` | Start production server |
